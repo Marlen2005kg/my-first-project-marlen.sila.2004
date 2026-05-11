@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Аптека Забота — Инклюзивная онлайн-аптека</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --primary: #0d9488; --primary-light: #14b8a6; --primary-dark: #0f766e;
+  --secondary: #0ea5e9; --accent: #10b981; --danger: #ef4444; --warning: #f59e0b;
+  --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --text-light: #64748b;
+  --text-muted: #94a3b8; --border: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
+  --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.15);
+  --radius: 20px; --radius-lg: 28px;
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-accessibility="high-contrast"] {
+  --primary: #000; --primary-light: #000; --secondary: #00f; --accent: #080;
+  --bg: #fff; --card: #fff; --text: #000; --text-light: #000; --text-muted: #000;
+  --border: #000; --shadow: none; --shadow-lg: none;
+}
+[data-accessibility="dark"] {
+  --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --text-light: #cbd5e1;
+  --text-muted: #94a3b8; --border: #334155;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.3); --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.4);
+}
+[data-font-size="large"] { font-size: 18px; }
+[data-font-size="xlarge"] { font-size: 22px; }
+[data-font-size="xxlarge"] { font-size: 26px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.7;
+  transition: var(--transition); overflow-x: hidden;
+}
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(13,148,136,0.4); } 50% { box-shadow: 0 0 0 20px rgba(13,148,136,0); } }
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.animate-on-scroll { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+.animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+/* HEADER */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(255,255,255,0.85); backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(226,232,240,0.6); transition: var(--transition);
+}
+[data-accessibility="dark"] .header { background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(51,65,85,0.6); }
+[data-accessibility="high-contrast"] .header { background: #fff; border-bottom: 3px solid #000; }
+.header-inner { max-width: 1400px; margin: 0 auto; padding: 14px 40px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+.logo { display: flex; align-items: center; gap: 14px; text-decoration: none; flex-shrink: 0; }
+.logo-icon { width: 52px; height: 52px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; box-shadow: 0 8px 20px rgba(13,148,136,0.3); transition: var(--transition); }
+.logo:hover .logo-icon { transform: rotate(-5deg) scale(1.08); box-shadow: 0 12px 30px rgba(13,148,136,0.4); }
+.logo-text { display: flex; flex-direction: column; }
+.logo-title { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.1; letter-spacing: -0.5px; }
+.logo-subtitle { font-size: 11px; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+.search-bar { flex: 1; max-width: 600px; position: relative; }
+.search-input-wrapper { display: flex; align-items: center; background: var(--card); border: 2px solid var(--border); border-radius: 50px; padding: 4px; transition: var(--transition); box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.search-input-wrapper:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(13,148,136,0.12), var(--shadow); transform: translateY(-1px); }
+.search-input { flex: 1; border: none; background: none; padding: 12px 20px; font-size: 16px; color: var(--text); outline: none; font-family: inherit; }
+.search-input::placeholder { color: var(--text-muted); }
+.search-btn { width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--primary); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); font-size: 16px; }
+.search-btn:hover { background: var(--primary-dark); transform: scale(1.1); }
+.voice-btn { width: 44px; height: 44px; border-radius: 50%; border: none; background: transparent; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); font-size: 18px; margin-right: 4px; }
+.voice-btn:hover { background: rgba(13,148,136,0.1); transform: scale(1.15); }
+.voice-btn.recording { animation: pulse 1.5s infinite; background: rgba(13,148,136,0.15); }
+.header-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.header-btn { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 50px; border: 2px solid var(--border); background: var(--card); color: var(--text); font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); text-decoration: none; font-family: inherit; }
+.header-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
+.header-btn i { font-size: 18px; }
+.header-btn.accessibility-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; box-shadow: 0 4px 15px rgba(13,148,136,0.3); }
+.header-btn.accessibility-btn:hover { box-shadow: 0 8px 25px rgba(13,148,136,0.4); transform: translateY(-2px) scale(1.02); }
+.cart-count { background: var(--danger); color: white; font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: -4px; }
+
+/* ACCESSIBILITY PANEL */
+.accessibility-panel { position: fixed; top: 90px; right: -400px; width: 380px; background: var(--card); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); padding: 30px; z-index: 999; transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid var(--border); }
+.accessibility-panel.open { right: 30px; }
+.accessibility-panel h3 { font-size: 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+.accessibility-panel h3 i { color: var(--primary); }
+.a11y-option { margin-bottom: 20px; }
+.a11y-option label { display: block; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+.a11y-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.a11y-btn { padding: 10px 18px; border-radius: 12px; border: 2px solid var(--border); background: var(--bg); color: var(--text); font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: inherit; }
+.a11y-btn:hover, .a11y-btn.active { border-color: var(--primary); background: rgba(13,148,136,0.08); color: var(--primary); }
+.a11y-toggle { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: var(--bg); border-radius: 14px; margin-bottom: 10px; cursor: pointer; transition: var(--transition); }
+.a11y-toggle:hover { background: rgba(13,148,136,0.05); }
+.toggle-switch { width: 52px; height: 28px; background: var(--border); border-radius: 14px; position: relative; transition: var(--transition); flex-shrink: 0; }
+.toggle-switch::after { content: ''; position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: var(--transition); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+.toggle-switch.on { background: var(--primary); }
+.toggle-switch.on::after { left: 27px; }
+
+/* HERO */
+.hero { padding: 160px 40px 100px; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; min-height: 90vh; }
+.hero-content { animation: fadeInUp 1s ease-out; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: rgba(13,148,136,0.08); border: 1px solid rgba(13,148,136,0.15); border-radius: 50px; color: var(--primary); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 28px; }
+.hero-badge i { font-size: 14px; }
+.hero h1 { font-size: 56px; font-weight: 800; line-height: 1.1; color: var(--text); margin-bottom: 24px; letter-spacing: -1.5px; }
+.hero h1 span { background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-desc { font-size: 20px; color: var(--text-light); margin-bottom: 40px; max-width: 520px; line-height: 1.8; }
+.hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; cursor: pointer; transition: var(--transition); text-decoration: none; font-family: inherit; border: none; }
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; box-shadow: 0 8px 30px rgba(13,148,136,0.35); }
+.btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 40px rgba(13,148,136,0.45); }
+.btn-outline { background: var(--card); color: var(--text); border: 2px solid var(--border); }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); box-shadow: var(--shadow); }
+.btn i { font-size: 18px; }
+.hero-visual { position: relative; animation: fadeIn 1.2s ease-out 0.3s both; }
+.hero-image-wrapper { position: relative; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xl); }
+.hero-image-wrapper::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(13,148,136,0.1), rgba(14,165,233,0.1)); z-index: 1; pointer-events: none; }
+.hero-image-wrapper img { width: 100%; height: 500px; object-fit: cover; display: block; transition: transform 0.8s ease; }
+.hero-image-wrapper:hover img { transform: scale(1.03); }
+.hero-floating-card { position: absolute; background: var(--card); border-radius: 20px; padding: 20px 24px; box-shadow: var(--shadow-xl); z-index: 10; animation: float 4s ease-in-out infinite; }
+.hero-floating-card.card-1 { top: 30px; right: -30px; animation-delay: 0s; }
+.hero-floating-card.card-2 { bottom: 40px; left: -40px; animation-delay: 1s; }
+.hero-floating-card .card-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 10px; }
+.hero-floating-card.card-1 .card-icon { background: rgba(16,185,129,0.1); color: var(--accent); }
+.hero-floating-card.card-2 .card-icon { background: rgba(14,165,233,0.1); color: var(--secondary); }
+.hero-floating-card .card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.hero-floating-card .card-text { font-size: 12px; color: var(--text-light); }
+
+/* CATEGORIES */
+.categories-section { padding: 80px 40px; max-width: 1400px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 60px; }
+.section-header h2 { font-size: 42px; font-weight: 800; margin-bottom: 16px; letter-spacing: -1px; }
+.section-header p { font-size: 18px; color: var(--text-light); max-width: 500px; margin: 0 auto; }
+.categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+.category-card { background: var(--card); border-radius: var(--radius); padding: 32px 24px; text-align: center; border: 2px solid transparent; transition: var(--transition); cursor: pointer; text-decoration: none; color: var(--text); position: relative; overflow: hidden; }
+.category-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); transform: scaleX(0); transition: transform 0.4s ease; }
+.category-card:hover::before { transform: scaleX(1); }
+.category-card:hover { border-color: var(--primary); transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+.category-icon { width: 72px; height: 72px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px; transition: var(--transition); }
+.category-card:hover .category-icon { transform: scale(1.15) rotate(-5deg); }
+.category-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.category-card p { font-size: 14px; color: var(--text-light); }
+
+/* PRODUCTS */
+.products-section { padding: 80px 40px; max-width: 1400px; margin: 0 auto; }
+.products-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; flex-wrap: wrap; gap: 20px; }
+.products-header h2 { font-size: 42px; font-weight: 800; letter-spacing: -1px; }
+.view-all-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 700; text-decoration: none; font-size: 16px; transition: var(--transition); }
+.view-all-btn:hover { gap: 14px; }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; }
+.product-card { background: var(--card); border-radius: var(--radius); overflow: hidden; border: 2px solid transparent; transition: var(--transition); position: relative; }
+.product-card:hover { border-color: var(--primary); transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+.product-image { position: relative; height: 220px; background: linear-gradient(135deg, #f0fdfa, #ecfeff); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+[data-accessibility="dark"] .product-image { background: linear-gradient(135deg, #134e4a, #164e63); }
+.product-image img { max-width: 70%; max-height: 70%; object-fit: contain; transition: var(--transition); }
+.product-card:hover .product-image img { transform: scale(1.1); }
+.product-badge { position: absolute; top: 16px; left: 16px; padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-new { background: var(--accent); color: white; }
+.badge-sale { background: var(--danger); color: white; }
+.badge-popular { background: var(--warning); color: white; }
+.product-actions { position: absolute; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; opacity: 0; transform: translateX(10px); transition: var(--transition); }
+.product-card:hover .product-actions { opacity: 1; transform: translateX(0); }
+.product-action-btn { width: 40px; height: 40px; border-radius: 12px; border: none; background: var(--card); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); box-shadow: var(--shadow); font-size: 16px; }
+.product-action-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
+.product-info { padding: 24px; }
+.product-category { font-size: 12px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.product-name { font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+.product-desc { font-size: 14px; color: var(--text-light); margin-bottom: 16px; line-height: 1.6; }
+.product-footer { display: flex; align-items: center; justify-content: space-between; }
+.product-price { font-size: 24px; font-weight: 800; color: var(--text); }
+.product-price .old-price { font-size: 14px; color: var(--text-muted); text-decoration: line-through; font-weight: 500; margin-left: 8px; }
+.add-to-cart { padding: 12px 24px; border-radius: 14px; border: none; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; font-size: 14px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 8px; font-family: inherit; }
+.add-to-cart:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(13,148,136,0.3); }
+
+/* FEATURES */
+.features-section { padding: 100px 40px; background: linear-gradient(135deg, #f0fdfa, #ecfeff, #f0f9ff); position: relative; overflow: hidden; }
+[data-accessibility="dark"] .features-section { background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a); }
+[data-accessibility="high-contrast"] .features-section { background: #fff; }
+.features-section::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(13,148,136,0.03) 0%, transparent 60%); animation: gradientShift 20s ease infinite; background-size: 200% 200%; }
+.features-inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; margin-top: 60px; }
+.feature-card { background: var(--card); border-radius: var(--radius); padding: 40px 32px; border: 2px solid transparent; transition: var(--transition); position: relative; overflow: hidden; }
+.feature-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); transform: scaleX(0); transition: transform 0.5s ease; }
+.feature-card:hover::after { transform: scaleX(1); }
+.feature-card:hover { border-color: var(--primary); transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.feature-icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 24px; transition: var(--transition); }
+.feature-card:hover .feature-icon { transform: scale(1.1) rotate(-5deg); }
+.feature-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+.feature-card p { font-size: 15px; color: var(--text-light); line-height: 1.7; }
+
+/* HOW IT WORKS */
+.how-it-works { padding: 100px 40px; max-width: 1400px; margin: 0 auto; }
+.steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 60px; }
+.step-card { text-align: center; position: relative; padding: 30px; }
+.step-card:not(:last-child)::after { content: ''; position: absolute; top: 50px; right: -30px; width: 60px; height: 2px; background: linear-gradient(90deg, var(--primary), transparent); }
+.step-number { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 10px 30px rgba(13,148,136,0.3); position: relative; }
+.step-number::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px dashed rgba(13,148,136,0.2); animation: spin 20s linear infinite; }
+.step-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.step-card p { font-size: 15px; color: var(--text-light); line-height: 1.7; }
+
+/* CONSULTATION CTA */
+.consultation-cta { padding: 0 40px; max-width: 1400px; margin: 0 auto 100px; }
+.cta-box { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius-lg); padding: 80px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; overflow: hidden; color: white; }
+.cta-box::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+.cta-box::after { content: ''; position: absolute; bottom: -150px; left: -100px; width: 500px; height: 500px; background: rgba(255,255,255,0.03); border-radius: 50%; }
+.cta-content { position: relative; z-index: 1; }
+.cta-content h2 { font-size: 42px; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
+.cta-content p { font-size: 18px; opacity: 0.9; margin-bottom: 32px; line-height: 1.7; }
+.cta-features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+.cta-feature { display: flex; align-items: center; gap: 12px; font-size: 16px; }
+.cta-feature i { width: 28px; height: 28px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.cta-visual { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; }
+.cta-avatar-stack { display: flex; align-items: center; gap: 20px; }
+.cta-avatar { width: 80px; height: 80px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 32px; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); }
+.cta-status { font-size: 14px; opacity: 0.8; }
+
+/* TESTIMONIALS */
+.testimonials { padding: 100px 40px; max-width: 1400px; margin: 0 auto; }
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 28px; margin-top: 60px; }
+.testimonial-card { background: var(--card); border-radius: var(--radius); padding: 36px; border: 2px solid var(--border); transition: var(--transition); position: relative; }
+.testimonial-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.testimonial-stars { color: #f59e0b; font-size: 16px; margin-bottom: 16px; }
+.testimonial-text { font-size: 16px; line-height: 1.8; color: var(--text); margin-bottom: 24px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 14px; }
+.testimonial-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; font-weight: 700; }
+.testimonial-info h4 { font-size: 16px; font-weight: 700; }
+.testimonial-info p { font-size: 14px; color: var(--text-light); }
+
+/* FOOTER */
+.footer { background: linear-gradient(135deg, #0f172a, #1e293b); color: #cbd5e1; padding: 80px 40px 40px; }
+[data-accessibility="high-contrast"] .footer { background: #000; color: #fff; }
+.footer-inner { max-width: 1400px; margin: 0 auto; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+.footer-brand .logo-title { color: white; }
+.footer-brand p { margin-top: 16px; line-height: 1.8; font-size: 15px; }
+.footer-social { display: flex; gap: 12px; margin-top: 24px; }
+.footer-social a { width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: #cbd5e1; text-decoration: none; transition: var(--transition); font-size: 18px; }
+.footer-social a:hover { background: var(--primary); color: white; transform: translateY(-3px); }
+.footer-column h4 { color: white; font-size: 16px; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; }
+.footer-column ul { list-style: none; }
+.footer-column li { margin-bottom: 12px; }
+.footer-column a { color: #94a3b8; text-decoration: none; font-size: 15px; transition: var(--transition); display: inline-block; }
+.footer-column a:hover { color: white; transform: translateX(4px); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 14px; color: #64748b; }
+.footer-bottom a { color: #94a3b8; text-decoration: none; transition: var(--transition); }
+.footer-bottom a:hover { color: white; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+.modal-overlay.active { display: flex; opacity: 1; }
+.modal { background: var(--card); border-radius: var(--radius-lg); max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; transform: scale(0.9) translateY(20px); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid var(--border); box-shadow: var(--shadow-xl); }
+.modal-overlay.active .modal { transform: scale(1) translateY(0); }
+.modal-header { padding: 30px 40px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.modal-header h2 { font-size: 28px; font-weight: 800; }
+.modal-close { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: var(--transition); }
+.modal-close:hover { border-color: var(--danger); color: var(--danger); transform: rotate(90deg); }
+.modal-body { padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.modal-image { background: linear-gradient(135deg, #f0fdfa, #ecfeff); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; padding: 40px; min-height: 300px; }
+[data-accessibility="dark"] .modal-image { background: linear-gradient(135deg, #134e4a, #164e63); }
+.modal-image img { max-width: 80%; max-height: 300px; object-fit: contain; }
+.modal-details h3 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+.modal-price { font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 20px; }
+.modal-section { margin-bottom: 24px; }
+.modal-section h4 { font-size: 14px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.modal-section p { font-size: 15px; color: var(--text-light); line-height: 1.7; }
+.modal-actions { display: flex; gap: 12px; margin-top: 30px; }
+.modal-actions .btn { flex: 1; justify-content: center; }
+.speak-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 12px; border: 2px solid var(--primary); background: rgba(13,148,136,0.08); color: var(--primary); font-size: 14px; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: inherit; margin-bottom: 20px; }
+.speak-btn:hover { background: var(--primary); color: white; }
+.speak-btn.speaking { animation: pulse 1s infinite; }
+
+/* CART SIDEBAR */
+.cart-sidebar { position: fixed; top: 0; right: -500px; width: 460px; max-width: 100%; height: 100vh; background: var(--card); z-index: 2000; transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; border-left: 1px solid var(--border); box-shadow: var(--shadow-xl); }
+.cart-sidebar.open { right: 0; }
+.cart-header { padding: 24px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.cart-header h2 { font-size: 22px; font-weight: 800; }
+.cart-items { flex: 1; overflow-y: auto; padding: 20px 30px; }
+.cart-item { display: flex; gap: 16px; padding: 16px; background: var(--bg); border-radius: 16px; margin-bottom: 12px; transition: var(--transition); }
+.cart-item:hover { background: rgba(13,148,136,0.05); }
+.cart-item-image { width: 64px; height: 64px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cart-item-image img { max-width: 80%; max-height: 80%; object-fit: contain; }
+.cart-item-info { flex: 1; }
+.cart-item-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+.cart-item-price { color: var(--primary); font-weight: 700; font-size: 16px; }
+.cart-item-qty { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.qty-btn { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: var(--transition); }
+.qty-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+.cart-item-remove { color: var(--danger); cursor: pointer; font-size: 18px; padding: 4px; transition: var(--transition); }
+.cart-item-remove:hover { transform: scale(1.2); }
+.cart-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.cart-empty i { font-size: 64px; margin-bottom: 20px; opacity: 0.3; }
+.cart-footer { padding: 24px 30px; border-top: 1px solid var(--border); background: var(--bg); }
+.cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 20px; }
+.cart-total span:last-child { font-weight: 800; font-size: 28px; color: var(--primary); }
+.cart-checkout { width: 100%; padding: 18px; border-radius: 16px; border: none; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; font-size: 18px; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: inherit; }
+.cart-checkout:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(13,148,136,0.3); }
+
+/* MOBILE NAV */
+.mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--border); padding: 10px 20px 20px; z-index: 1000; backdrop-filter: blur(20px); }
+.mobile-nav-items { display: flex; justify-content: space-around; align-items: center; }
+.mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 600; transition: var(--transition); padding: 6px 12px; border-radius: 12px; }
+.mobile-nav-item i { font-size: 22px; }
+.mobile-nav-item.active, .mobile-nav-item:hover { color: var(--primary); }
+
+/* TOAST */
+.toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 3000; display: flex; flex-direction: column; gap: 12px; }
+.toast { background: var(--card); border-radius: 16px; padding: 18px 24px; box-shadow: var(--shadow-xl); display: flex; align-items: center; gap: 14px; border-left: 4px solid var(--primary); transform: translateX(120%); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); max-width: 400px; }
+.toast.show { transform: translateX(0); }
+.toast-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(13,148,136,0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.toast-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.toast-content p { font-size: 13px; color: var(--text-light); }
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .hero { grid-template-columns: 1fr; text-align: center; }
+  .hero-desc { margin: 0 auto 40px; }
+  .hero-buttons { justify-content: center; }
+  .hero-visual { max-width: 600px; margin: 0 auto; }
+  .hero-floating-card { display: none; }
+  .search-bar { max-width: 400px; }
+}
+@media (max-width: 900px) {
+  .header-inner { padding: 12px 20px; }
+  .logo-text { display: none; }
+  .header-btn span { display: none; }
+  .header-btn { padding: 10px; }
+  .search-bar { display: none; }
+  .hero { padding: 120px 20px 60px; }
+  .hero h1 { font-size: 36px; }
+  .categories-section, .products-section, .features-section, .how-it-works, .testimonials { padding: 60px 20px; }
+  .section-header h2, .products-header h2 { font-size: 28px; }
+  .cta-box { grid-template-columns: 1fr; padding: 50px 30px; }
+  .cta-content h2 { font-size: 28px; }
+  .footer-grid { gap: 40px; }
+  .mobile-nav { display: block; }
+  body { padding-bottom: 80px; }
+}
+@media (max-width: 640px) {
+  .products-grid { grid-template-columns: 1fr; }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: 1fr; }
+  .accessibility-panel { width: 100%; right: -100%; top: 70px; border-radius: 0; }
+  .accessibility-panel.open { right: 0; }
+  .cart-sidebar { width: 100%; }
+  .modal-body { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+[data-accessibility="no-animations"] * { animation: none !important; transition: none !important; }
+*:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+.skip-link { position: absolute; top: -100px; left: 20px; background: var(--primary); color: white; padding: 12px 24px; border-radius: 12px; font-weight: 700; text-decoration: none; z-index: 10000; transition: top 0.3s; }
+.skip-link:focus { top: 20px; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Перейти к основному содержимому</a>
+
+<!-- HEADER -->
+<header class="header" role="banner">
+<div class="header-inner">
+<a href="#" class="logo" aria-label="Аптека Забота — на главную">
+<div class="logo-icon" aria-hidden="true"><i class="fas fa-heart-pulse"></i></div>
+<div class="logo-text">
+<span class="logo-title">Аптека Забота</span>
+<span class="logo-subtitle">Инклюзивная аптека</span>
+</div>
+</a>
+<div class="search-bar" role="search">
+<div class="search-input-wrapper">
+<input type="text" class="search-input" placeholder="Найти лекарство, витамин, симптом..." aria-label="Поиск лекарств">
+<button class="voice-btn" aria-label="Голосовой поиск" title="Голосовой поиск"><i class="fas fa-microphone"></i></button>
+<button class="search-btn" aria-label="Искать"><i class="fas fa-search"></i></button>
+</div>
+</div>
+<div class="header-actions">
+<button class="header-btn accessibility-btn" id="a11yToggle" aria-label="Открыть настройки доступности" title="Версия для слабовидящих">
+<i class="fas fa-universal-access"></i><span>Доступность</span>
+</button>
+<button class="header-btn" id="cartToggle" aria-label="Корзина">
+<i class="fas fa-shopping-cart"></i><span>Корзина</span><span class="cart-count" id="cartCount">0</span>
+</button>
+<button class="header-btn" aria-label="Войти в личный кабинет">
+<i class="fas fa-user"></i><span>Войти</span>
+</button>
+</div>
+</div>
+</header>
+
+<!-- ACCESSIBILITY PANEL -->
+<div class="accessibility-panel" id="a11yPanel" role="dialog" aria-label="Настройки доступности">
+<h3><i class="fas fa-universal-access"></i> Настройки доступности</h3>
+<div class="a11y-option">
+<label>Размер шрифта</label>
+<div class="a11y-buttons">
+<button class="a11y-btn active" data-font="normal">Обычный</button>
+<button class="a11y-btn" data-font="large">Крупный</button>
+<button class="a11y-btn" data-font="xlarge">Очень крупный</button>
+<button class="a11y-btn" data-font="xxlarge">Максимальный</button>
+</div>
+</div>
+<div class="a11y-option">
+<label>Тема оформления</label>
+<div class="a11y-buttons">
+<button class="a11y-btn active" data-theme="light">Светлая</button>
+<button class="a11y-btn" data-theme="dark">Тёмная</button>
+<button class="a11y-btn" data-theme="high-contrast">Высокий контраст</button>
+</div>
+</div>
+<div class="a11y-toggle" role="button" tabindex="0" data-toggle="animations">
+<span><i class="fas fa-film" style="margin-right:8px;color:var(--primary)"></i> Отключить анимации</span>
+<div class="toggle-switch" id="animToggle"></div>
+</div>
+<div class="a11y-toggle" role="button" tabindex="0" data-toggle="voice">
+<span><i class="fas fa-volume-up" style="margin-right:8px;color:var(--primary)"></i> Озвучивание текста</span>
+<div class="toggle-switch" id="voiceToggle"></div>
+</div>
+<div class="a11y-toggle" role="button" tabindex="0" data-toggle="large-buttons">
+<span><i class="fas fa-hand-pointer" style="margin-right:8px;color:var(--primary)"></i> Увеличенные кнопки</span>
+<div class="toggle-switch" id="btnToggle"></div>
+</div>
+</div>
+
+<!-- MAIN -->
+<main id="main">
+<!-- HERO -->
+<section class="hero" aria-label="Главный баннер">
+<div class="hero-content">
+<div class="hero-badge"><i class="fas fa-shield-heart"></i> Безопасные покупки 24/7</div>
+<h1>Покупайте лекарства <span>быстро и удобно</span>, не выходя из дома</h1>
+<p class="hero-desc">Инклюзивная онлайн-аптека, созданная с заботой о каждом. Доступный интерфейс, голосовой поиск, консультации фармацевтов и быстрая доставка.</p>
+<div class="hero-buttons">
+<a href="#products" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Начать покупки</a>
+<button class="btn btn-outline" onclick="openConsultation()"><i class="fas fa-user-doctor"></i> Консультация фармацевта</button>
+</div>
+</div>
+<div class="hero-visual">
+<div class="hero-image-wrapper">
+<img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" alt="Пожилой человек улыбается, используя планшет для заказа лекарств дома" loading="lazy">
+</div>
+<div class="hero-floating-card card-1">
+<div class="card-icon"><i class="fas fa-truck-fast"></i></div>
+<div class="card-title">Быстрая доставка</div>
+<div class="card-text">От 30 минут</div>
+</div>
+<div class="hero-floating-card card-2">
+<div class="card-icon"><i class="fas fa-certificate"></i></div>
+<div class="card-title">Только сертифицированные</div>
+<div class="card-text">Препараты с лицензией</div>
+</div>
+</div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories-section" id="categories">
+<div class="section-header animate-on-scroll">
+<h2>Категории товаров</h2>
+<p>Выберите нужную категорию и найдите подходящий препарат</p>
+</div>
+<div class="categories-grid">
+<a href="#" class="category-card animate-on-scroll">
+<div class="category-icon" style="background:rgba(239,68,68,0.1);color:var(--danger)"><i class="fas fa-pills"></i></div>
+<h3>Обезболивающие</h3>
+<p>124 товара</p>
+</a>
+<a href="#" class="category-card animate-on-scroll">
+<div class="category-icon" style="background:rgba(245,158,11,0.1);color:var(--warning)"><i class="fas fa-apple-whole"></i></div>
+<h3>Витамины</h3>
+<p>89 товаров</p>
+</a>
+<a href="#" class="category-card animate-on-scroll">
+<div class="category-icon" style="background:rgba(239,68,68,0.1);color:var(--danger)"><i class="fas fa-heart-pulse"></i></div>
+<h3>Для сердца</h3>
+<p>56 товаров</p>
+</a>
+<a href="#" class="category-card animate-on-scroll">
+<div class="category-icon" style="background:rgba(14,165,233,0.1);color:var(--secondary)"><i class="fas fa-baby"></i></div>
+<h3>Для детей</h3>
+<p>78 товаров</p>
+</a>
+<a href="#" class="category-card animate-on-scroll">
+<div class="category-icon" style="background:rgba(16,185,129,0.1);color:var(--accent)"><i class="fas fa-kit-medical"></i></div>
+<h3>Медицинские товары</h3>
+<p>203 товара</p>
+</a>
+<a href="#" class="category-card animate-on-scroll">
+<div class="category-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6"><i class="fas fa-hand-sparkles"></i></div>
+<h3>Антисептики</h3>
+<p>45 товаров</p>
+</a>
+</div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+<div class="products-header animate-on-scroll">
+<h2>Популярные товары</h2>
+<a href="#" class="view-all-btn">Все товары <i class="fas fa-arrow-right"></i></a>
+</div>
+<div class="products-grid">
+<div class="product-card animate-on-scroll" data-product="1">
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&q=80" alt="Парацетамол 500 мг" loading="lazy">
+<span class="product-badge badge-popular">Популярное</span>
+<div class="product-actions">
+<button class="product-action-btn" onclick="speakProduct(1)" aria-label="Озвучить описание" title="Озвучить"><i class="fas fa-volume-up"></i></button>
+<button class="product-action-btn" onclick="openProductModal(1)" aria-label="Подробнее" title="Подробнее"><i class="fas fa-eye"></i></button>
+</div>
+</div>
+<div class="product-info">
+<div class="product-category">Обезболивающие</div>
+<h3 class="product-name">Парацетамол 500 мг</h3>
+<p class="product-desc">Таблетки для снижения температуры и облегчения боли. 20 таблеток в упаковке.</p>
+<div class="product-footer">
+<div class="product-price">89 ₽</div>
+<button class="add-to-cart" onclick="addToCart(1)"><i class="fas fa-cart-plus"></i> В корзину</button>
+</div>
+</div>
+</div>
+
+<div class="product-card animate-on-scroll" data-product="2">
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=400&q=80" alt="Витамин D3 2000 МЕ" loading="lazy">
+<span class="product-badge badge-new">Новинка</span>
+<div class="product-actions">
+<button class="product-action-btn" onclick="speakProduct(2)" aria-label="Озвучить описание" title="Озвучить"><i class="fas fa-volume-up"></i></button>
+<button class="product-action-btn" onclick="openProductModal(2)" aria-label="Подробнее" title="Подробнее"><i class="fas fa-eye"></i></button>
+</div>
+</div>
+<div class="product-info">
+<div class="product-category">Витамины</div>
+<h3 class="product-name">Витамин D3 2000 МЕ</h3>
+<p class="product-desc">Поддержка иммунитета и здоровья костей. 90 капсул. Натуральный состав.</p>
+<div class="product-footer">
+<div class="product-price">349 ₽ <span class="old-price">499 ₽</span></div>
+<button class="add-to-cart" onclick="addToCart(2)"><i class="fas fa-cart-plus"></i> В корзину</button>
+</div>
+</div>
+</div>
+
+<div class="product-card animate-on-scroll" data-product="3">
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&q=80" alt="Нурофен Экспресс" loading="lazy">
+<span class="product-badge badge-sale">Скидка -30%</span>
+<div class="product-actions">
+<button class="product-action-btn" onclick="speakProduct(3)" aria-label="Озвучить описание" title="Озвучить"><i class="fas fa-volume-up"></i></button>
+<button class="product-action-btn" onclick="openProductModal(3)" aria-label="Подробнее" title="Подробнее"><i class="fas fa-eye"></i></button>
+</div>
+</div>
+<div class="product-info">
+<div class="product-category">Обезболивающие</div>
+<h3 class="product-name">Нурофен Экспресс</h3>
+<p class="product-desc">Быстрое облегчение головной боли и мигрени. 400 мг, 12 капсул.</p>
+<div class="product-footer">
+<div class="product-price">259 ₽ <span class="old-price">369 ₽</span></div>
+<button class="add-to-cart" onclick="addToCart(3)"><i class="fas fa-cart-plus"></i> В корзину</button>
+</div>
+</div>
+</div>
+
+<div class="product-card animate-on-scroll" data-product="4">
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&q=80" alt="Омега-3 рыбий жир" loading="lazy">
+<div class="product-actions">
+<button class="product-action-btn" onclick="speakProduct(4)" aria-label="Озвучить описание" title="Озвучить"><i class="fas fa-volume-up"></i></button>
+<button class="product-action-btn" onclick="openProductModal(4)" aria-label="Подробнее" title="Подробнее"><i class="fas fa-eye"></i></button>
+</div>
+</div>
+<div class="product-info">
+<div class="product-category">Для сердца</div>
+<h3 class="product-name">Омега-3 рыбий жир</h3>
+<p class="product-desc">Поддержка сердечно-сосудистой системы. 1000 мг, 120 капсул. Премиум качество.</p>
+<div class="product-footer">
+<div class="product-price">599 ₽</div>
+<button class="add-to-cart" onclick="addToCart(4)"><i class="fas fa-cart-plus"></i> В корзину</button>
+</div>
+</div>
+</div>
+
+<div class="product-card animate-on-scroll" data-product="5">
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&q=80" alt="Нурофен для детей" loading="lazy">
+<span class="product-badge badge-popular">Популярное</span>
+<div class="product-actions">
+<button class="product-action-btn" onclick="speakProduct(5)" aria-label="Озвучить описание" title="Озвучить"><i class="fas fa-volume-up"></i></button>
+<button class="product-action-btn" onclick="openProductModal(5)" aria-label="Подробнее" title="Подробнее"><i class="fas fa-eye"></i></button>
+</div>
+</div>
+<div class="product-info">
+<div class="product-category">Для детей</div>
+<h3 class="product-name">Нурофен для детей</h3>
+<p class="product-desc">Суспензия со вкусом клубники. 100 мл. Снижение температуры у детей.</p>
+<div class="product-footer">
+<div class="product-price">329 ₽</div>
+<button class="add-to-cart" onclick="addToCart(5)"><i class="fas fa-cart-plus"></i> В корзину</button>
+</div>
+</div>
+</div>
+
+<div class="product-card animate-on-scroll" data-product="6">
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&q=80" alt="Хлоргексидин 0.05%" loading="lazy">
+<span class="product-badge badge-new">Новинка</span>
+<div class="product-actions">
+<button class="product-action-btn" onclick="speakProduct(6)" aria-label="Озвучить описание" title="Озвучить"><i class="fas fa-volume-up"></i></button>
+<button class="product-action-btn" onclick="openProductModal(6)" aria-label="Подробнее" title="Подробнее"><i class="fas fa-eye"></i></button>
+</div>
+</div>
+<div class="product-info">
+<div class="product-category">Антисептики</div>
+<h3 class="product-name">Хлоргексидин 0.05%</h3>
+<p class="product-desc">Раствор для обработки ран и кожи. 100 мл. Широкий спектр действия.</p>
+<div class="product-footer">
+<div class="product-price">79 ₽</div>
+<button class="add-to-cart" onclick="addToCart(6)"><i class="fas fa-cart-plus"></i> В корзину</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+<div class="features-inner">
+<div class="section-header animate-on-scroll">
+<h2>Почему выбирают нас</h2>
+<p>Мы создали аптеку, которая заботится о каждом пациенте</p>
+</div>
+<div class="features-grid">
+<div class="feature-card animate-on-scroll">
+<div class="feature-icon" style="background:rgba(13,148,136,0.1);color:var(--primary)"><i class="fas fa-universal-access"></i></div>
+<h3>Инклюзивный дизайн</h3>
+<p>Сайт адаптирован для людей с особыми потребностями: слабовидящих, пожилых, людей с ограниченной моторикой и когнитивными особенностями.</p>
+</div>
+<div class="feature-card animate-on-scroll">
+<div class="feature-icon" style="background:rgba(14,165,233,0.1);color:var(--secondary)"><i class="fas fa-microphone"></i></div>
+<h3>Голосовой поиск</h3>
+<p>Нажмите на микрофон и скажите название лекарства или симптом — сайт найдет все подходящие препараты мгновенно.</p>
+</div>
+<div class="feature-card animate-on-scroll">
+<div class="feature-icon" style="background:rgba(16,185,129,0.1);color:var(--accent)"><i class="fas fa-user-doctor"></i></div>
+<h3>Онлайн-консультация</h3>
+<p>Профессиональные фармацевты готовы ответить на ваши вопросы в чате 24 часа в сутки, 7 дней в неделю.</p>
+</div>
+<div class="feature-card animate-on-scroll">
+<div class="feature-icon" style="background:rgba(245,158,11,0.1);color:var(--warning)"><i class="fas fa-truck-fast"></i></div>
+<h3>Быстрая доставка</h3>
+<p>Доставка от 30 минут в пределах города. Бесплатная доставка при заказе от 1000 рублей. Отслеживание в реальном времени.</p>
+</div>
+<div class="feature-card animate-on-scroll">
+<div class="feature-icon" style="background:rgba(239,68,68,0.1);color:var(--danger)"><i class="fas fa-bell"></i></div>
+<h3>Напоминания о приеме</h3>
+<p>Настройте уведомления о времени приема лекарств. Сайт напомнит и предложит повторную покупку.</p>
+</div>
+<div class="feature-card animate-on-scroll">
+<div class="feature-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6"><i class="fas fa-file-prescription"></i></div>
+<h3>Распознавание рецептов</h3>
+<p>Загрузите фото рецепта — искусственный интеллект распознает текст и подберет нужные препараты автоматически.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works">
+<div class="section-header animate-on-scroll">
+<h2>Как это работает</h2>
+<p>Всего 4 простых шага от поиска до получения</p>
+</div>
+<div class="steps-grid">
+<div class="step-card animate-on-scroll">
+<div class="step-number">1</div>
+<h3>Найдите лекарство</h3>
+<p>Используйте поиск по названию, симптому или голосовой ввод</p>
+</div>
+<div class="step-card animate-on-scroll">
+<div class="step-number">2</div>
+<h3>Добавьте в корзину</h3>
+<p>Ознакомьтесь с описанием, инструкцией и добавьте товар</p>
+</div>
+<div class="step-card animate-on-scroll">
+<div class="step-number">3</div>
+<h3>Оформите заказ</h3>
+<p>Укажите адрес доставки и выберите удобный способ оплаты</p>
+</div>
+<div class="step-card animate-on-scroll">
+<div class="step-number">4</div>
+<h3>Получите заказ</h3>
+<p>Курьер доставит лекарства прямо к вашей двери</p>
+</div>
+</div>
+</section>
+
+<!-- CONSULTATION CTA -->
+<section class="consultation-cta">
+<div class="cta-box animate-on-scroll">
+<div class="cta-content">
+<h2>Нужна помощь с выбором лекарства?</h2>
+<p>Наши фармацевты помогут подобрать подходящий препарат, расскажут о дозировке и противопоказаниях.</p>
+<div class="cta-features">
+<div class="cta-feature"><i class="fas fa-check"></i> Бесплатная консультация</div>
+<div class="cta-feature"><i class="fas fa-check"></i> Ответ за 2 минуты</div>
+<div class="cta-feature"><i class="fas fa-check"></i> Проверка совместимости препаратов</div>
+</div>
+<button class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;" onclick="openConsultation()">
+<i class="fas fa-comments"></i> Написать фармацевту
+</button>
+</div>
+<div class="cta-visual">
+<div class="cta-avatar-stack">
+<div class="cta-avatar online" style="position:relative"><i class="fas fa-user-doctor"></i></div>
+<div>
+<div style="font-weight:700;font-size:18px;">Фармацевт онлайн</div>
+<div class="cta-status"><i class="fas fa-circle" style="color:#10b981;font-size:10px;margin-right:6px;"></i>Ответит через минуту</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+<div class="section-header animate-on-scroll">
+<h2>Отзывы наших клиентов</h2>
+<p>Узнайте, что говорят люди, которые уже воспользовались нашей аптекой</p>
+</div>
+<div class="testimonials-grid">
+<div class="testimonial-card animate-on-scroll">
+<div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+<p class="testimonial-text">"Очень удобный сайт! Большой шрифт, все кнопки крупные. Мне 72 года, и я без труда смогла заказать лекарства самостоятельно. Доставка пришла за 40 минут."</p>
+<div class="testimonial-author">
+<div class="testimonial-avatar">МК</div>
+<div class="testimonial-info">
+<h4>Мария Константиновна</h4>
+<p>Пенсионерка, Москва</p>
+</div>
+</div>
+</div>
+<div class="testimonial-card animate-on-scroll">
+<div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+<p class="testimonial-text">"Голосовой поиск — это просто находка! Не нужно ничего печатать, просто сказал "парацетамол" — и сайт сразу нашел. Очень помогает, когда руки заняты."</p>
+<div class="testimonial-author">
+<div class="testimonial-avatar">АП</div>
+<div class="testimonial-info">
+<h4>Алексей Петров</h4>
+<p>Инвалид-колясочник, Санкт-Петербург</p>
+</div>
+</div>
+</div>
+<div class="testimonial-card animate-on-scroll">
+<div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+<p class="testimonial-text">"Функция озвучивания текста бесценна для моей мамы, которая плохо видит. Она слушает описание лекарства и инструкцию прямо на сайте. Спасибо за заботу!"</p>
+<div class="testimonial-author">
+<div class="testimonial-avatar">ЕС</div>
+<div class="testimonial-info">
+<h4>Елена Смирнова</h4>
+<p>Дочь пациентки, Екатеринбург</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+<div class="footer-inner">
+<div class="footer-grid">
+<div class="footer-brand">
+<a href="#" class="logo" style="margin-bottom:16px;display:inline-flex;">
+<div class="logo-icon" aria-hidden="true"><i class="fas fa-heart-pulse"></i></div>
+<div class="logo-text">
+<span class="logo-title" style="color:white">Аптека Забота</span>
+<span class="logo-subtitle">Инклюзивная аптека</span>
+</div>
+</a>
+<p>Инклюзивная онлайн-аптека, созданная с заботой о людях с особыми потребностями. Быстрая доставка, профессиональные консультации и доступный интерфейс.</p>
+<div class="footer-social">
+<a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+<a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<a href="#" aria-label="VK"><i class="fab fa-vk"></i></a>
+<a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+</div>
+</div>
+<div class="footer-column">
+<h4>Каталог</h4>
+<ul>
+<li><a href="#">Лекарства</a></li>
+<li><a href="#">Витамины</a></li>
+<li><a href="#">БАДы</a></li>
+<li><a href="#">Медицинские товары</a></li>
+<li><a href="#">Для мам и детей</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h4>Помощь</h4>
+<ul>
+<li><a href="#">Доставка и оплата</a></li>
+<li><a href="#">Как заказать</a></li>
+<li><a href="#">Возврат товара</a></li>
+<li><a href="#">Частые вопросы</a></li>
+<li><a href="#">Консультация</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h4>Контакты</h4>
+<ul>
+<li><a href="tel:88001234567"><i class="fas fa-phone" style="margin-right:8px"></i> 8 (800) 123-45-67</a></li>
+<li><a href="mailto:help@apteka-zabota.ru"><i class="fas fa-envelope" style="margin-right:8px"></i> help@apteka-zabota.ru</a></li>
+<li><span style="color:#94a3b8"><i class="fas fa-clock" style="margin-right:8px"></i> Круглосуточно</span></li>
+<li><span style="color:#94a3b8"><i class="fas fa-map-marker-alt" style="margin-right:8px"></i> Москва, ул. Здоровья, 1</span></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<div>© 2026 Аптека Забота. Все права защищены.</div>
+<div style="display:flex;gap:20px;">
+<a href="#">Политика конфиденциальности</a>
+<a href="#">Условия использования</a>
+<a href="#">Лицензия</a>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Мобильная навигация">
+<div class="mobile-nav-items">
+<a href="#" class="mobile-nav-item active">
+<i class="fas fa-home"></i>
+<span>Главная</span>
+</a>
+<a href="#categories" class="mobile-nav-item">
+<i class="fas fa-th-large"></i>
+<span>Каталог</span>
+</a>
+<a href="#" class="mobile-nav-item" onclick="document.getElementById('cartToggle').click(); return false;">
+<i class="fas fa-shopping-cart"></i>
+<span>Корзина</span>
+<span class="badge" id="mobileCartCount">0</span>
+</a>
+<a href="#" class="mobile-nav-item">
+<i class="fas fa-user"></i>
+<span>Профиль</span>
+</a>
+</div>
+</nav>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal" onclick="closeProductModal(event)">
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-header">
+<h2 id="modalTitle">Информация о товаре</h2>
+<button class="modal-close" onclick="closeProductModal()" aria-label="Закрыть"><i class="fas fa-times"></i></button>
+</div>
+<div class="modal-body">
+<div class="modal-image">
+<img id="modalImage" src="" alt="">
+</div>
+<div class="modal-details">
+<button class="speak-btn" id="modalSpeakBtn" onclick="speakModalText()">
+<i class="fas fa-volume-up"></i> Прослушать описание
+</button>
+<h3 id="modalProductName">Название товара</h3>
+<div class="modal-price" id="modalPrice">0 ₽</div>
+<div class="modal-section">
+<h4>Описание</h4>
+<p id="modalDesc">Описание товара...</p>
+</div>
+<div class="modal-section">
+<h4>Способ применения</h4>
+<p id="modalUsage">Инструкция по применению...</p>
+</div>
+<div class="modal-section">
+<h4>Противопоказания</h4>
+<p id="modalContra">Противопоказания...</p>
+</div>
+<div class="modal-actions">
+<button class="btn btn-primary" onclick="addToCartFromModal()">
+<i class="fas fa-cart-plus"></i> В корзину
+</button>
+<button class="btn btn-outline" onclick="closeProductModal()">
+<i class="fas fa-times"></i> Закрыть
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+<div class="cart-header">
+<h2><i class="fas fa-shopping-cart" style="margin-right:10px;color:var(--primary)"></i>Ваша корзина</h2>
+<button class="modal-close" onclick="toggleCart()" aria-label="Закрыть корзину"><i class="fas fa-times"></i></button>
+</div>
+<div class="cart-items" id="cartItems">
+<div class="cart-empty">
+<i class="fas fa-shopping-basket"></i>
+<p>Корзина пуста</p>
+<p style="font-size:14px;margin-top:8px;">Добавьте товары из каталога</p>
+</div>
+</div>
+<div class="cart-footer">
+<div class="cart-total">
+<span>Итого:</span>
+<span id="cartTotal">0 ₽</span>
+</div>
+<button class="cart-checkout" onclick="checkout()">
+<i class="fas fa-credit-card" style="margin-right:8px"></i> Оформить заказ
+</button>
+</div>
+</div>
+
+<!-- CONSULTATION MODAL -->
+<div class="modal-overlay" id="consultationModal" onclick="closeConsultation(event)">
+<div class="modal" style="max-width:600px;" role="dialog" aria-modal="true" aria-labelledby="consultTitle">
+<div class="modal-header">
+<h2 id="consultTitle"><i class="fas fa-user-doctor" style="margin-right:10px;color:var(--primary)"></i>Консультация фармацевта</h2>
+<button class="modal-close" onclick="closeConsultation()" aria-label="Закрыть"><i class="fas fa-times"></i></button>
+</div>
+<div class="modal-body" style="grid-template-columns:1fr;">
+<div>
+<p style="margin-bottom:20px;color:var(--text-light);line-height:1.7;">Наши фармацевты помогут вам подобрать лекарства, расскажут о дозировке и проверят совместимость с другими препаратами.</p>
+<div style="background:var(--bg);border-radius:16px;padding:24px;margin-bottom:20px;">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+<div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;color:white;font-size:20px;"><i class="fas fa-user-doctor"></i></div>
+<div>
+<div style="font-weight:700;">Анна Викторовна</div>
+<div style="font-size:13px;color:var(--text-light)">Ведущий фармацевт</div>
+</div>
+<div style="margin-left:auto;display:flex;align-items:center;gap:6px;color:#10b981;font-size:13px;font-weight:600;"><i class="fas fa-circle" style="font-size:8px;"></i> Онлайн</div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<span style="padding:6px 14px;background:rgba(13,148,136,0.08);border-radius:50px;font-size:13px;color:var(--primary);font-weight:600;"><i class="fas fa-check" style="margin-right:4px"></i> 15 лет опыта</span>
+<span style="padding:6px 14px;background:rgba(14,165,233,0.08);border-radius:50px;font-size:13px;color:var(--secondary);font-weight:600;"><i class="fas fa-check" style="margin-right:4px"></i> Ответ за 2 мин</span>
+</div>
+</div>
+<div style="display:flex;gap:12px;">
+<button class="btn btn-primary" style="flex:1;justify-content:center;" onclick="showToast('Чат с фармацевтом открыт', 'Анна Викторовна ответит вам в ближайшее время')">
+<i class="fas fa-comment-dots"></i> Написать в чат
+</button>
+<button class="btn btn-outline" style="flex:1;justify-content:center;" onclick="showToast('Звонок инициирован', 'Фармацевт перезвонит вам в течение 5 минут')">
+<i class="fas fa-phone"></i> Заказать звонок
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ===== DATA =====
+const products = {
+  1: { name: 'Парацетамол 500 мг', price: 89, oldPrice: null, category: 'Обезболивающие', desc: 'Таблетки для снижения температуры и облегчения боли. 20 таблеток в упаковке. Эффективное средство при головной боли, зубной боли, мышечных болях и повышенной температуре.', usage: 'Взрослым и детям старше 12 лет: по 1-2 таблетки до 4 раз в день. Максимальная суточная доза — 8 таблеток. Принимать после еды, запивая водой.', contra: 'Повышенная чувствительность к парацетамолу, тяжелые нарушения функции печени и почек, алкоголизм. Не рекомендуется применять дольше 5 дней без консультации врача.', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&q=80' },
+  2: { name: 'Витамин D3 2000 МЕ', price: 349, oldPrice: 499, category: 'Витамины', desc: 'Поддержка иммунитета и здоровья костей. 90 капсул. Натуральный состав на основе рыбьего жира. Рекомендован для профилактики дефицита витамина D.', usage: 'Принимать по 1 капсуле в день во время еды. Курс приема — 2-3 месяца. Можно повторять 2 раза в год.', contra: 'Повышенная чувствительность к компонентам, гиперкальциемия, гиперкальциурия, туберкулез в активной форме.', image: 'https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=400&q=80' },
+  3: { name: 'Нурофен Экспресс', price: 259, oldPrice: 369, category: 'Обезболивающие', desc: 'Быстрое облегчение головной боли и мигрени. 400 мг, 12 капсул. Жидкая форма для быстрого всасывания. Действует уже через 10 минут.', usage: 'Взрослым: по 1 капсуле при необходимости. Максимум 3 капсулы в сутки. Принимать целиком, запивая водой.', contra: 'Язвенная болезнь, нарушения свертываемости крови, тяжелые заболевания печени и почек, беременность в III триместре.', image: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&q=80' },
+  4: { name: 'Омега-3 рыбий жир', price: 599, oldPrice: null, category: 'Для сердца', desc: 'Поддержка сердечно-сосудистой системы. 1000 мг, 120 капсул. Премиум качество. Очищенный концентрат рыбьего жира с высоким содержанием EPA и DHA.', usage: 'По 1-2 капсулы 2 раза в день во время еды. Курс — не менее 3 месяцев для достижения эффекта.', contra: 'Повышенная чувствительность к рыбе, нарушения свертываемости крови, перед операциями.', image: 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&q=80' },
+  5: { name: 'Нурофен для детей', price: 329, oldPrice: null, category: 'Для детей', desc: 'Суспензия со вкусом клубники. 100 мл. Снижение температуры у детей. Безопасная формула для детей от 3 месяцев.', usage: 'Дозировка зависит от веса ребенка. 5-10 мг/кг массы тела. Давать каждые 6-8 часов при необходимости. Перед применением взболтать.', contra: 'Детям до 3 месяцев, при обезвоживании, нарушениях функции печени и почек. Не комбинировать с другими НПВС.', image: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&q=80' },
+  6: { name: 'Хлоргексидин 0.05%', price: 79, oldPrice: null, category: 'Антисептики', desc: 'Раствор для обработки ран и кожи. 100 мл. Широкий спектр действия против бактерий, грибков и вирусов. Не раздражает кожу.', usage: 'Наносить на пораженную поверхность ватным тампоном или распылять. Применять 2-3 раза в день до полного заживления.', contra: 'Повышенная чувствительность к хлоргексидину, сухая кожа с тенденцией к шелушению. Не применять в глаза и уши.', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&q=80' }
+};
+
+let cart = [];
+let currentModalProduct = null;
+let voiceEnabled = false;
+let speechSynthesis = window.speechSynthesis;
+
+// ===== ACCESSIBILITY PANEL =====
+const a11yPanel = document.getElementById('a11yPanel');
+const a11yToggle = document.getElementById('a11yToggle');
+
+a11yToggle.addEventListener('click', () => {
+  a11yPanel.classList.toggle('open');
+});
+
+// Font size buttons
+document.querySelectorAll('[data-font]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-font]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const size = btn.dataset.font;
+    document.body.removeAttribute('data-font-size');
+    if (size !== 'normal') {
+      document.body.setAttribute('data-font-size', size);
+    }
+  });
+});
+
+// Theme buttons
+document.querySelectorAll('[data-theme]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-theme]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const theme = btn.dataset.theme;
+    document.body.removeAttribute('data-accessibility');
+    if (theme !== 'light') {
+      document.body.setAttribute('data-accessibility', theme);
+    }
+  });
+});
+
+// Toggle switches
+document.querySelectorAll('.a11y-toggle').forEach(toggle => {
+  toggle.addEventListener('click', () => {
+    const type = toggle.dataset.toggle;
+    const switchEl = toggle.querySelector('.toggle-switch');
+    switchEl.classList.toggle('on');
+
+    if (type === 'animations') {
+      if (switchEl.classList.contains('on')) {
+        document.body.setAttribute('data-accessibility', 'no-animations');
+      } else {
+        document.body.removeAttribute('data-accessibility');
+      }
+    } else if (type === 'voice') {
+      voiceEnabled = switchEl.classList.contains('on');
+    } else if (type === 'large-buttons') {
+      if (switchEl.classList.contains('on')) {
+        document.body.style.setProperty('--radius', '28px');
+        document.querySelectorAll('.btn, .add-to-cart, .header-btn').forEach(el => {
+          el.style.padding = '18px 32px';
+          el.style.minHeight = '52px';
+        });
+      } else {
+        document.body.style.removeProperty('--radius');
+        document.querySelectorAll('.btn, .add-to-cart, .header-btn').forEach(el => {
+          el.style.padding = '';
+          el.style.minHeight = '';
+        });
+      }
+    }
+  });
+});
+
+// Close panel on outside click
+document.addEventListener('click', (e) => {
+  if (!a11yPanel.contains(e.target) && !a11yToggle.contains(e.target)) {
+    a11yPanel.classList.remove('open');
+  }
+});
+
+// ===== CART =====
+const cartSidebar = document.getElementById('cartSidebar');
+const cartToggle = document.getElementById('cartToggle');
+
+cartToggle.addEventListener('click', toggleCart);
+
+function toggleCart() {
+  cartSidebar.classList.toggle('open');
+  updateCartDisplay();
+}
+
+function addToCart(productId) {
+  const existing = cart.find(item => item.id === productId);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ id: productId, qty: 1 });
+  }
+  updateCartCount();
+  showToast('Товар добавлен', products[productId].name + ' добавлен в корзину');
+}
+
+function addToCartFromModal() {
+  if (currentModalProduct) {
+    addToCart(currentModalProduct);
+    closeProductModal();
+  }
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter(item => item.id !== productId);
+  updateCartCount();
+  updateCartDisplay();
+}
+
+function updateQty(productId, delta) {
+  const item = cart.find(item => item.id === productId);
+  if (item) {
+    item.qty += delta;
+    if (item.qty <= 0) {
+      removeFromCart(productId);
+    } else {
+      updateCartDisplay();
+      updateCartCount();
+    }
+  }
+}
+
+function updateCartCount() {
+  const total = cart.reduce((sum, item) => sum + item.qty, 0);
+  document.getElementById('cartCount').textContent = total;
+  document.getElementById('mobileCartCount').textContent = total;
+}
+
+function updateCartDisplay() {
+  const container = document.getElementById('cartItems');
+  if (cart.length === 0) {
+    container.innerHTML = `
+      <div class="cart-empty">
+        <i class="fas fa-shopping-basket"></i>
+        <p>Корзина пуста</p>
+        <p style="font-size:14px;margin-top:8px;">Добавьте товары из каталога</p>
+      </div>
+    `;
+    document.getElementById('cartTotal').textContent = '0 ₽';
+    return;
+  }
+
+  let total = 0;
+  container.innerHTML = cart.map(item => {
+    const product = products[item.id];
+    total += product.price * item.qty;
+    return `
+      <div class="cart-item">
+        <div class="cart-item-image">
+          <img src="${product.image}" alt="${product.name}">
+        </div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${product.name}</div>
+          <div class="cart-item-price">${product.price} ₽</div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+            <span style="font-weight:700;min-width:24px;text-align:center;">${item.qty}</span>
+            <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+          </div>
+        </div>
+        <div class="cart-item-remove" onclick="removeFromCart(${item.id})" role="button" aria-label="Удалить из корзины">
+          <i class="fas fa-trash-alt"></i>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('cartTotal').textContent = total + ' ₽';
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    showToast('Корзина пуста', 'Добавьте товары перед оформлением заказа');
+    return;
+  }
+  showToast('Заказ оформлен', 'Спасибо за покупку! Курьер свяжется с вами в ближайшее время.');
+  cart = [];
+  updateCartCount();
+  updateCartDisplay();
+  setTimeout(() => toggleCart(), 2000);
+}
+
+// ===== PRODUCT MODAL =====
+function openProductModal(productId) {
+  const product = products[productId];
+  currentModalProduct = productId;
+  document.getElementById('modalProductName').textContent = product.name;
+  document.getElementById('modalPrice').textContent = product.price + ' ₽';
+  document.getElementById('modalDesc').textContent = product.desc;
+  document.getElementById('modalUsage').textContent = product.usage;
+  document.getElementById('modalContra').textContent = product.contra;
+  document.getElementById('modalImage').src = product.image;
+  document.getElementById('modalImage').alt = product.name;
+  document.getElementById('productModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProductModal(e) {
+  if (e && e.target !== e.currentTarget && !e.target.closest('.modal-close')) return;
+  document.getElementById('productModal').classList.remove('active');
+  document.body.style.overflow = '';
+  currentModalProduct = null;
+}
+
+// ===== CONSULTATION =====
+function openConsultation() {
+  document.getElementById('consultationModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeConsultation(e) {
+  if (e && e.target !== e.currentTarget && !e.target.closest('.modal-close')) return;
+  document.getElementById('consultationModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== VOICE =====
+function speakProduct(productId) {
+  const product = products[productId];
+  speakText(product.name + '. ' + product.desc + ' Способ применения: ' + product.usage + ' Противопоказания: ' + product.contra);
+}
+
+function speakModalText() {
+  if (!currentModalProduct) return;
+  const product = products[currentModalProduct];
+  speakText(product.name + '. Цена ' + product.price + ' рублей. ' + product.desc + ' Способ применения: ' + product.usage);
+}
+
+function speakText(text) {
+  if (!speechSynthesis) {
+    showToast('Озвучивание недоступно', 'Ваш браузер не поддерживает синтез речи');
+    return;
+  }
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'ru-RU';
+  utterance.rate = 0.9;
+  utterance.pitch = 1;
+  speechSynthesis.speak(utterance);
+
+  const btn = document.getElementById('modalSpeakBtn');
+  if (btn) btn.classList.add('speaking');
+  utterance.onend = () => {
+    if (btn) btn.classList.remove('speaking');
+  };
+}
+
+// ===== VOICE SEARCH =====
+const voiceBtn = document.querySelector('.voice-btn');
+let recognition = null;
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'ru-RU';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.onstart = () => {
+    voiceBtn.classList.add('recording');
+    showToast('Голосовой поиск', 'Говорите название лекарства или симптом...');
+  };
+
+  recognition.onend = () => {
+    voiceBtn.classList.remove('recording');
+  };
+
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+    document.querySelector('.search-input').value = text;
+    showToast('Распознано', 'Ищем: "' + text + '"');
+    // Simulate search
+    setTimeout(() => {
+      showToast('Результаты поиска', 'Найдено 3 товара по запросу "' + text + '"');
+    }, 1000);
+  };
+
+  recognition.onerror = () => {
+    voiceBtn.classList.remove('recording');
+    showToast('Ошибка', 'Не удалось распознать речь. Попробуйте еще раз.');
+  };
+}
+
+voiceBtn.addEventListener('click', () => {
+  if (recognition) {
+    recognition.start();
+  } else {
+    showToast('Голосовой поиск', 'Ваш браузер не поддерживает голосовой ввод');
+  }
+});
+
+// ===== TOAST =====
+function showToast(title, message) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `
+    <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
+    <div class="toast-content">
+      <h4>${title}</h4>
+      <p>${message}</p>
+    </div>
+  `;
+  container.appendChild(toast);
+
+  requestAnimationFrame(() => {
+    toast.classList.add('show');
+  });
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 500);
+  }, 4000);
+}
+
+// ===== SCROLL ANIMATIONS =====
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.animate-on-scroll').forEach(el => {
+  observer.observe(el);
+});
+
+// ===== HEADER SCROLL =====
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.header');
+  const currentScroll = window.pageYOffset;
+
+  if (currentScroll > 100) {
+    header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+  } else {
+    header.style.boxShadow = 'none';
+  }
+
+  lastScroll = currentScroll;
+});
+
+// ===== KEYBOARD NAVIGATION =====
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    a11yPanel.classList.remove('open');
+    cartSidebar.classList.remove('open');
+    document.getElementById('productModal').classList.remove('active');
+    document.getElementById('consultationModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});
+
+// ===== INIT =====
+updateCartCount();
+
+// Auto-announce for screen readers
+if (voiceEnabled) {
+  setTimeout(() => {
+    speakText('Добро пожаловать в аптеку Забота. Сайт адаптирован для людей с особыми потребностями. Используйте клавишу таб для навигации.');
+  }, 2000);
+}
+</script>
+</body>
+</html>
